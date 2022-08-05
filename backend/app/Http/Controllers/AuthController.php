@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Annotations as OA;
 
 class AuthController extends Controller
 {
@@ -14,7 +15,17 @@ class AuthController extends Controller
      * Handle an authentication attempt.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"auth"},
+     *     operationId="login",
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized"
+     *     )
+     * )
      */
     public function login(Request $request)
     {
@@ -30,6 +41,23 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Post(
+     *     path="/api/register",
+     *     tags={"auth"},
+     *     operationId="login",
+     *     @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     )
+     * )
+     */
     public function register(Request $request)
     {
         $post_data = $request->validate([
@@ -42,6 +70,7 @@ class AuthController extends Controller
             'name' => $post_data['name'],
             'email' => $post_data['email'],
             'password' => Hash::make($post_data['password']),
+            'role'=>json_encode(['ROLE_USER'])
         ]);
 
         $token = $user->createToken('authToken')->plainTextToken;
