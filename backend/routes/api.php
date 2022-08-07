@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me',  [AuthController::class, 'me']);
 
     Route::prefix('/task/')->group(function() {
-        Route::get   ('/', [TaskController::class, 'getAll'])->name('tasks');
+        Route::get   ('/', [TaskController::class, 'getAll'])->name('Tasks.tsx');
         Route::post  ('/', [TaskController::class, 'create'])->name('createTask');
         Route::delete('/{id}', [TaskController::class, 'delete'])->middleware(ShouldBeAdmin::class)->name('deleteTask');
         Route::patch ('/{id}', [TaskController::class, 'update'])->name('updateTask');

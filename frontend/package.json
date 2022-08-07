@@ -1,15 +1,29 @@
 {
-  "name": "frontend",
+  "name": "my-vue-app",
+  "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "vite --port 3000",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.0.4"
+    "@stitches/react": "^1.2.8",
+    "ohmyfetch": "^0.4.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "6",
+    "react-router-dom": "6",
+    "zustand": "^4.0.0"
   },
   "devDependencies": {
-    "vite": "^1.0.0-rc.13",
-    "@vue/compiler-sfc": "^3.0.4"
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-react-app": "^7.0.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0"
   }
 }
