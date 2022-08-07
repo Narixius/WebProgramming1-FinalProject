@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/react-router": "^5.1.18"
+  }
+}
