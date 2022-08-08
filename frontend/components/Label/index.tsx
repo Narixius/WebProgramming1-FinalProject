@@ -1,3 +1,3 @@
-import {styled} from "@stitches/react";
+import {styled} from "../../stitches.config";
 
 export const Label = styled('label');

@@ -12,7 +12,8 @@ export type StoreType = {
         role: string
     },
     token: string | null,
-    login: (body: {email: string, password:string}) => Promise<any>
+    login: (body: {email: string, password:string}) => Promise<any>,
+    logout: () => void
 }
 
 const fetchUserRaw = (token:string) => $fetch({
@@ -44,16 +45,20 @@ export const useAuth = () => {
 export const useTasks = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const createTask = (body: {title: string, description: string}) => {
+        return Task.createTask(body).then(()=>{
+            fetchTasks();
+        })
+    }
+    const fetchTasks = useCallback(async () =>{
+        setLoading(true);
+        setTasks(await Task.getAllTasks(fetchTasks).finally(setLoading.bind(null, false)));
+    }, [])
     useEffect(()=>{
-        const fetchTasks = async () =>{
-            setLoading(true);
-            setTasks(await Task.getAllTasks().finally(setLoading.bind(null, false)));
-        }
         fetchTasks();
     }, [])
 
-    return {tasks, loading}
+    return {tasks, loading, createTask}
 }
 
 export const useTask = (taskId: string) => {
@@ -63,7 +68,7 @@ export const useTask = (taskId: string) => {
     useEffect(()=>{
         const fetchTask = async () =>{
             setLoading(true);
-            setTasks(await Task.getTask(taskId).finally(setLoading.bind(null, false)));
+            setTasks(await Task.getTask(taskId, fetchTask).finally(setLoading.bind(null, false)));
         }
         fetchTask();
     }, [])
@@ -89,16 +94,18 @@ export const useTaskHistory = (taskId: string) => {
 export const useUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const createUser = (...args: Parameters<typeof User.addUser>) => {
+        return User.addUser(...args).then(fetchUsers)
+    }
+    const fetchUsers = useCallback(async () =>{
+        setLoading(true);
+        setUsers(await User.getAllUsers(fetchUsers).finally(setLoading.bind(null, false)));
+    }, [])
     useEffect(()=>{
-        const fetchUsers = async () =>{
-            setLoading(true);
-            setUsers(await User.getAllUsers().finally(setLoading.bind(null, false)));
-        }
         fetchUsers();
     }, [])
 
-    return {users, loading}
+    return {users, loading, createUser}
 }
 
 export const useUser = (userId: string) => {
@@ -108,7 +115,7 @@ export const useUser = (userId: string) => {
     useEffect(()=>{
         const fetchTask = async () =>{
             setLoading(true);
-            setUser(await User.getUser(userId).finally(setLoading.bind(null, false)));
+            setUser(await User.getUser(userId, fetchTask).finally(setLoading.bind(null, false)));
         }
         fetchTask();
     }, [])
@@ -122,6 +129,13 @@ export const useCreateTask = () => {
 
 export const useStore = create<StoreType>((set, get) => ({
     token: localStorage.getItem("AUTH_TOKEN"),
+    logout: async ()=>{
+        localStorage.removeItem("AUTH_TOKEN");
+        set({
+            user: undefined,
+            token: undefined,
+        })
+    },
     login: async (body: {email: string, password: string}) => {
         return $fetch({})(LOGIN_API, {
             method: 'POST',

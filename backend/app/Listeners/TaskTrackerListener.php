@@ -46,6 +46,7 @@ class TaskTrackerListener
      */
     public function handle(TaskChangeEvent $event)
     {
+
         $userId = Auth::user()->id;
         $last_value = [];
         if($event->type == "update") {

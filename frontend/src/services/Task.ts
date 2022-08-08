@@ -26,14 +26,17 @@ export class Task {
     public description: string = "";
     public status: StatusType = "ToDo";
     public id: number;
-    constructor(id: number, title:string, description:string, status: StatusType) {
+    public cb;
+
+    constructor(id: number, title:string, description:string, status: StatusType, cb?: any) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.cb = cb;
     }
 
-    public static createTask = async (body: {title: string, description: string, status: StatusType}) => {
+    public static createTask = async (body: {title: string, description: string}) => {
         return await $fetch({
             'Authorization' : `Bearer ${useStore.getState().token}`
         })<Task>(TASKS_API, {
@@ -45,20 +48,20 @@ export class Task {
         })
     }
 
-    public static getTask = async (taskId:string | number) => {
+    public static getTask = async (taskId:string | number, cb:any) => {
         return await $fetch({
             'Authorization' : `Bearer ${useStore.getState().token}`
         })<Task>(TASK_API(String(taskId)))
             .then((task)=>{
-            return new Task(task.id, task.title, task.description, task.status)
+            return new Task(task.id, task.title, task.description, task.status, cb)
         })
     }
-    public static getAllTasks = async () => {
+    public static getAllTasks = async (cb:any) => {
         return await $fetch({
             'Authorization' : `Bearer ${useStore.getState().token}`
         })<Task[]>(TASKS_API)
             .then((tasks)=>{
-                return tasks.map((task) => new Task(task.id, task.title, task.description, task.status))
+                return tasks.map((task) => new Task(task.id, task.title, task.description, task.status, cb))
             })
     }
 
@@ -70,6 +73,8 @@ export class Task {
             method: "PATCH"
         })
         .then((task)=>{
+            if(this.cb)
+                this.cb();
             return new Task(task.id, task.title, task.description, task.status)
         })
     }
@@ -94,6 +99,9 @@ export class Task {
             'Authorization' : `Bearer ${useStore.getState().token}`
         })<{ message: string }>(TASK_API(String(this.id)), {
             method: "Delete"
+        }).then(()=>{
+            if(this.cb)
+                this.cb()
         })
     }
 }

@@ -22,7 +22,7 @@ export const Login:FC = () => {
         })
     }
     if(user && !loading)
-        return <Navigate to={'/manage'} />
+        return <Navigate to={'/task'} />
 
     if(loading)
         return <span>...</span>
@@ -39,7 +39,7 @@ export const Login:FC = () => {
                 <Label css={{margin: '8px 0'}}>Email</Label>
                 <Input name="email" />
                 <Label css={{margin: '8px 0'}}>Password</Label>
-                <Input name="password" />
+                <Input name="password" type={"password"} />
                 {
                     error ? <Box css={{backgroundColor: "rgba(255,0,0,0.2)", padding: '10px 15px', borderRadius: '5px', marginTop: '10px'}}>{error}</Box> : null
                 }

@@ -35,7 +35,7 @@ class TaskController extends Controller
      * )
      */
     function getAll() {
-        return response()->json(Task::all());
+        return response()->json(Task::orderBy("created_at", 'desc')->get());
     }
 
     /**
@@ -55,9 +55,11 @@ class TaskController extends Controller
         $post_data = $request->validate([
                 'title'=>'required|string',
                 'description'=>'required|string',
-                'status'=> ['required', new Enum(TaskStatus::class)]
         ]);
-        $task = Task::create($post_data);
+        $task = Task::create([
+            ...$post_data,
+            'status' => TaskStatus::ToDo
+        ]);
         TaskChangeEvent::dispatch("create",$task->id, null, $post_data);
         return response()->json($task);
     }
@@ -119,18 +121,35 @@ class TaskController extends Controller
     public function update($taskId, Request $request) {
         /** @var Task $task */
         $task = Task::find($taskId);
-        $post_data = $request->validate([
-            'title'=>'string',
-            'description'=>'string',
-            'status'=> [new Enum(TaskStatus::class)]
-        ]);
         if(!$task)
             return response()->json([
                 "message" => "task not found!"
             ], 404);
+        $post_data = $request->validate([
+            'title'=>'string',
+            'description'=>'string',
+            'status'=> "in:" . implode(',', $this->nextStatus($task->status))
+        ]);
         TaskChangeEvent::dispatch("update", $taskId, $task, $post_data);
         $task->update($post_data);
         return response()->json($task);
+    }
+
+    private function nextStatus(String $currentStatus){
+        switch ($currentStatus){
+            case TaskStatus::ToDo->value:
+                return [TaskStatus::InProgress->value, TaskStatus::ToDo->value];
+            case TaskStatus::InProgress->value:
+                return [TaskStatus::Blocked->value, TaskStatus::InQA->value, TaskStatus::InProgress->value];
+            case TaskStatus::Blocked->value:
+                return [TaskStatus::ToDo->value, TaskStatus::Blocked->value];
+            case TaskStatus::InQA->value:
+                return [TaskStatus::ToDo->value, TaskStatus::Done->value, TaskStatus::InQA->value];
+            case TaskStatus::Done->value:
+                return [TaskStatus::Deployed->value, TaskStatus::Done->value];
+            default:
+                return [];
+        }
     }
 
     /**

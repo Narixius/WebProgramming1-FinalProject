@@ -14,7 +14,7 @@ class TaskHistory extends Model
         'task_id',
         'last_value',
         'new_value',
-
+        'type'
     ];
 
     public function task()
