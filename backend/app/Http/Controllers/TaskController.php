@@ -148,7 +148,7 @@ class TaskController extends Controller
             case TaskStatus::Done->value:
                 return [TaskStatus::Deployed->value, TaskStatus::Done->value];
             default:
-                return [];
+                return [TaskStatus::Deployed->value];
         }
     }
 

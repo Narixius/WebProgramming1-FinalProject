@@ -90,7 +90,7 @@ export const Tasks = () => {
                 display: 'grid',
                 gap:'15px',
                 flexGrow: '1',
-                gridAutoRows: 'minmax(min-content, max-content)',
+                gridAutoRows: tasks.length > 0 ? 'minmax(min-content, max-content)' : undefined,
                 gridTemplateColumns: tasks.length > 0 ? '1fr 1fr' : 'auth',
                 "@bp3": {
                     gridTemplateColumns: tasks.length > 0 ? '1fr 1fr 1fr 1fr' : 'auth',
@@ -103,7 +103,9 @@ export const Tasks = () => {
                         : <Box css={{
                             display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        height: '100%',
+                        flexGrow: '1'
                         }}>
                             <Span css={{
                                 textAlign: 'center',
