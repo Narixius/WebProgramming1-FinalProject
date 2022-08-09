@@ -1,4 +1,4 @@
-import { useAuth, useTasks } from "../../../store";
+import { useAuth } from "../../../store";
 import { styled } from "../../../../stitches.config";
 import { Flex } from "../../../../components/Flex";
 import { Input, Textarea } from "../../../../components/Input";
@@ -7,6 +7,7 @@ import { Box } from "../../../../components/Box";
 import { FC, RefObject, useRef } from "react";
 import { Task } from "../../../services/Task";
 import { Link } from "react-router-dom";
+import { useTasks } from "../../../hooks/tasks";
 
 
 const Span = styled('span')

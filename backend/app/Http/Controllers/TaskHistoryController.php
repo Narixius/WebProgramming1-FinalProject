@@ -17,6 +17,14 @@ class TaskHistoryController extends Controller
      *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
+     *     ),
+     *     @OA\Parameter(
+     *         description="Task id",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="int", value="1", summary="An int value.")
      *     )
      * )
      */

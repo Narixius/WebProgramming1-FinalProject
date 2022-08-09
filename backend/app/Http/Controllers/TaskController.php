@@ -25,7 +25,7 @@ class TaskController extends Controller
      * Get all Tasks.tsx list
      *
      * @OA\Get(
-     *     path="/api/task",
+     *     path="/task",
      *     tags={"task"},
      *     operationId="getAllTasks",
      *     @OA\Response(
@@ -42,13 +42,28 @@ class TaskController extends Controller
      * create a new task
      *
      * @OA\Post(
-     *     path="/api/task",
+     *     path="/task",
      *     tags={"task"},
      *     operationId="createTask",
      *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
-     *     )
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
      * )
      */
     public function create(Request $request) {
@@ -115,7 +130,28 @@ class TaskController extends Controller
      *         required=true,
      *         @OA\Schema(type="string"),
      *         @OA\Examples(example="int", value="1", summary="An int value.")
-     *     )
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="status",
+     *                     oneOf={
+     *                     	   @OA\Schema(type="string", enum={"ToDo", "InProgress", "Blocked", "Done", "Deployed", "InQA"})
+     *                     }
+     *                 )
+     *             )
+     *         )
+     *     ),
      * )
      */
     public function update($taskId, Request $request) {

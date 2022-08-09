@@ -67,7 +67,25 @@ class UserController extends Controller
      *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
-     *     )
+     *     ),
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
      * )
      */
     function create(Request $request) {
@@ -104,6 +122,24 @@ class UserController extends Controller
      *         @OA\Schema(type="string"),
      *         @OA\Examples(example="int", value="1", summary="An int value.")
      *     ),
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(
+     *             @OA\Property(
+     *                 property="name",
+     *                 type="string"
+     *             ),
+     *             @OA\Property(
+     *                 property="password",
+     *                 type="string"
+     *             ),
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="string"
+     *             )
+     *         )
+     *     )
+     *   ),
      * )
      */
     function update($userId, Request $request) {

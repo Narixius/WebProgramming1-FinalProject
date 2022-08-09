@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
  *  ),
  *  @OA\Server(
  *      description="Todo App API",
- *      url="https://localhost/api/"
+ *      url="http://localhost/api/"
  *  ),
  *  @OA\PathItem(
  *      path="/"

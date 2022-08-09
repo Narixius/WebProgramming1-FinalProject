@@ -6,19 +6,36 @@
     },
     "servers": [
         {
-            "url": "https://localhost/api/",
+            "url": "http://localhost/api/",
             "description": "Todo App API"
         }
     ],
     "paths": {
         "/": {},
-        "/api/login": {
+        "/login": {
             "post": {
                 "tags": [
                     "auth"
                 ],
                 "summary": "Handle an authentication attempt.",
                 "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "401": {
                         "description": "unauthorized"
@@ -26,13 +43,33 @@
                 }
             }
         },
-        "/api/register": {
+        "/register": {
             "post": {
                 "tags": [
                     "auth"
                 ],
                 "summary": "Handle an authentication attempt.",
                 "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "405": {
                         "description": "Invalid input"
@@ -40,12 +77,12 @@
                 }
             }
         },
-        "/api/task": {
+        "/task": {
             "get": {
                 "tags": [
                     "task"
                 ],
-                "summary": "Get all tasks list",
+                "summary": "Get all Tasks.tsx list",
                 "operationId": "getAllTasks",
                 "responses": {
                     "405": {
@@ -59,6 +96,23 @@
                 ],
                 "summary": "create a new task",
                 "operationId": "createTask",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "405": {
                         "description": "Invalid input"
@@ -148,6 +202,38 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ToDo",
+                                                    "InProgress",
+                                                    "Blocked",
+                                                    "Done",
+                                                    "Deployed",
+                                                    "InQA"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "405": {
                         "description": "Invalid input"
@@ -161,6 +247,23 @@
                     "task"
                 ],
                 "operationId": "getTaskHistory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "405": {
                         "description": "Invalid input"
@@ -281,6 +384,16 @@
                         "description": "Invalid input"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },

@@ -18,13 +18,28 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/login",
      *     tags={"auth"},
      *     operationId="login",
      *     @OA\Response(
      *         response=401,
      *         description="unauthorized"
-     *     )
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
      * )
      */
     public function login(Request $request)
@@ -49,13 +64,32 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/register",
      *     tags={"auth"},
      *     operationId="login",
      *     @OA\Response(
      *         response=405,
      *         description="Invalid input"
-     *     )
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
      * )
      */
     public function register(Request $request)

@@ -1,4 +1,3 @@
-import { useUsers } from "../../../store";
 import { styled } from "../../../../stitches.config";
 import { Flex } from "../../../../components/Flex";
 import { Input, Textarea } from "../../../../components/Input";
@@ -7,6 +6,7 @@ import { Box } from "../../../../components/Box";
 import { FC, RefObject, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../../../services/User";
+import { useUsers } from "../../../hooks/users";
 
 
 const Span = styled('span')
