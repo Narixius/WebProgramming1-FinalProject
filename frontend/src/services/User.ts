@@ -4,10 +4,10 @@ import {TASK_API, USER_API, USERS_API} from "../constants/api";
 
 
 export class User {
-    name: string = "";
+    name = "";
     role: string[] = [];
-    email: string = "";
-    id: number = 0;
+    email = "";
+    id = 0;
     cb;
 
     constructor(name: string, role: string[], email: string, id: number, cb?: any) {

@@ -22,8 +22,8 @@ export type TaskHistory = {
     [key: string]: any
 }
 export class Task {
-    public title: string = "";
-    public description: string = "";
+    public title = "";
+    public description = "";
     public status: StatusType = "ToDo";
     public id: number;
     public cb;
