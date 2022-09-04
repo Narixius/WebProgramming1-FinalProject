@@ -89,7 +89,8 @@ export class Task {
                     taskId: history['task_id'],
                     lastValue: history['last_value'],
                     newValue: history['new_value'],
-                    user: history.user
+                    user: history.user,
+										createdAt: history.created_at
                 }))
             })
     }
